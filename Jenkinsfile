@@ -1,18 +1,21 @@
-pipeline {
-    agent any
-    stages {
-        stage('test') {
-            steps {
-                sh 'echo hello'
+pipeline{
+    agent{
+        label 'hi'
+    }
+    triggers{
+        pollSCM('* * * * *')
+    }
+    stages{
+        stage('clone'){
+            steps{
+                git url: 'https://github.com/lahari104/game-of-life.git',
+                    branch : 'moon'
             }
         }
-        stage('learning') {
-            agent { label 'OPENJDK-11-MAVEN' }
-            steps {
-                git url: 'https://github.com/GitPracticeRepo/game-of-life.git', 
-                    branch: 'master'
+        stage('package'){
+            steps{
+                sh """mvn package"""
             }
         }
     }
 }
-
