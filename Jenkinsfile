@@ -24,11 +24,5 @@ pipeline{
                 followSymlinks: false
             }
         }
-        stage('JUNIT'){
-            steps{
-                junit '**/surefire-reports.xml'
-            }
-        }
-
     }
 }
