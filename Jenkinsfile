@@ -14,8 +14,21 @@ pipeline{
         }
         stage('package'){
             steps{
-                sh """mvn package"""
+                sh """export PATH=/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH
+                      mvn package"""
+            }    
+        }
+        stage('archive'){
+            steps{
+                archiveArtifacts artifacts: '**/target/*.war', 
+                followSymlinks: false
             }
         }
+        stage('JUNIT'){
+            steps{
+                junit '**/surefire-reports.xml'
+            }
+        }
+
     }
 }
