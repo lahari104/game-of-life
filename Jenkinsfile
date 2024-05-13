@@ -1,18 +1,20 @@
-pipeline {
-    agent any
-    stages {
-        stage('test') {
-            steps {
-                sh 'echo hello'
+pipeline{
+    agent {
+        label 'tomcat'
+    }
+    stages{
+        stage('clone'){
+            steps{
+                git url"https://github.com/lahari104/game-of-life.git"
+                branch 'tomcat'
             }
         }
-        stage('learning') {
-            agent { label 'OPENJDK-11-MAVEN' }
-            steps {
-                git url: 'https://github.com/GitPracticeRepo/game-of-life.git', 
-                    branch: 'master'
+        stage('build'){
+            steps{
+                sh 'sudo apt install maven -y'
+                sh 'mvn clean package'
+                sh 'sudo apt install tomcat9 -y'
             }
         }
     }
 }
-
