@@ -2,11 +2,14 @@ pipeline{
     agent {
         label 'tomcat'
     }
+    triggers{
+        pollSCM('* * * * *')
+    }
     stages{
         stage('clone'){
             steps{
-                git url"https://github.com/lahari104/game-of-life.git"
-                branch 'tomcat'
+                git url: "https://github.com/lahari104/game-of-life.git",
+                    branch: 'tomcat'
             }
         }
         stage('build'){
