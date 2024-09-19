@@ -1,0 +1,39 @@
+# Define the stages of the pipeline
+stages:
+  - build
+  - test
+  - package
+
+# Define the build stage
+build_job:
+  only:
+    - gitlab-ci
+  stage: build
+  script:
+    - echo "Building the project..."
+    - mvn clean compile  # Compile the project
+
+# Define the test stage
+test_job:
+  only:
+    - gitlab-ci
+  needs:
+    - build_job
+  stage: test
+  script:
+    - echo "Running tests..."
+    - mvn test  # Run the tests
+
+# Define the package stage
+package_job:
+  only:
+    - gitlab-ci
+  needs:
+    - test_job
+  stage: package
+  script:
+    - echo "Packaging the application..."
+    - mvn package  # Package the project into a JAR/WAR file
+  artifacts:
+    paths:
+      - target/*.war  # Save the JAR/WAR file as an artifact
